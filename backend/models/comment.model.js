@@ -1,0 +1,28 @@
+import mongoose from "mongoose";
+
+const commentSchema = new mongoose.Schema(
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
+    },
+    newsId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "News",
+    },
+    comment: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+  },
+  {
+    timestamps: true,
+    versionKey: false,
+  }
+);
+
+const Comment = mongoose.model("Comment", commentSchema);
+export default Comment;

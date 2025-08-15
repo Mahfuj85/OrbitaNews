@@ -14,7 +14,6 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, CardContent } from "@/components/ui/card";
 import slugify from "slugify";
-import { getEnv } from "@/helpers/getEnv";
 import { showToast } from "@/helpers/showToast";
 import {
   Select,
@@ -25,7 +24,6 @@ import {
 } from "@/components/ui/select";
 import Dropzone from "react-dropzone";
 import Editor from "@/components/Editor";
-// import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { RouteNews } from "@/helpers/RouteName";
 import { decode } from "entities";
@@ -37,8 +35,6 @@ const EditNews = () => {
   const [file, setFile] = useState();
   const { newsId } = useParams();
   const navigate = useNavigate();
-
-  //const user = useSelector((state) => state.user);
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_BACKEND_URL}/category/all`)

@@ -14,7 +14,6 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, CardContent } from "@/components/ui/card";
 import slugify from "slugify";
-import { getEnv } from "@/helpers/getEnv";
 import { showToast } from "@/helpers/showToast";
 import { useParams } from "react-router-dom";
 

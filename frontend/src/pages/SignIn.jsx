@@ -16,7 +16,6 @@ import { Card } from "@/components/ui/card";
 //import loginImage from "@/assets/images/loginImage.avif";
 import { RouteIndex, RouteSignUp } from "@/helpers/RouteName";
 import { Link, useNavigate } from "react-router-dom";
-import { getEnv } from "@/helpers/getEnv";
 import { showToast } from "@/helpers/showToast";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/redux/user/user.slice";
@@ -41,12 +40,15 @@ const SignIn = () => {
 
   async function onSubmit(values) {
     try {
-      const response = await fetch(`${getEnv("VITE_BACKEND_URL")}/auth/login`, {
-        method: "POST",
-        headers: { "Content-type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(values),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/auth/login`,
+        {
+          method: "POST",
+          headers: { "Content-type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify(values),
+        }
+      );
       const data = await response.json();
       if (!response.ok) {
         return showToast("error", data.message);

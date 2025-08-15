@@ -1,5 +1,3 @@
-import { getEnv } from "@/helpers/getEnv";
-import { useFetch } from "@/hooks/useFetch";
 import React, { useEffect, useState } from "react";
 import Loading from "./Loading";
 import { Avatar, AvatarImage } from "./ui/avatar";

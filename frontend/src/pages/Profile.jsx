@@ -2,7 +2,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import React, { useEffect, useState } from "react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { useDispatch, useSelector } from "react-redux";
-import { getEnv } from "@/helpers/getEnv";
 import { showToast } from "@/helpers/showToast";
 import { setUser } from "@/redux/user/user.slice";
 import { z } from "zod";
@@ -53,10 +52,13 @@ const Profile = () => {
   });
 
   useEffect(() => {
-    fetch(`${getEnv("VITE_BACKEND_URL")}/users/get-user/${user?.user?._id}`, {
-      method: "GET",
-      credentials: "include",
-    })
+    fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/users/get-user/${user?.user?._id}`,
+      {
+        method: "GET",
+        credentials: "include",
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         if (data?.user) {

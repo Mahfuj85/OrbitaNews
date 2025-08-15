@@ -14,7 +14,6 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, CardContent } from "@/components/ui/card";
 import slugify from "slugify";
-import { getEnv } from "@/helpers/getEnv";
 import { showToast } from "@/helpers/showToast";
 import {
   Select,
@@ -23,8 +22,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useFetch } from "@/hooks/useFetch";
-import Loading from "@/components/Loading";
 import Dropzone from "react-dropzone";
 import Editor from "@/components/Editor";
 import { useSelector } from "react-redux";
@@ -87,11 +84,14 @@ const AddNews = () => {
       formData.append("file", file);
       formData.append("data", JSON.stringify(newValues));
 
-      const response = await fetch(`${getEnv("VITE_BACKEND_URL")}/news/add`, {
-        method: "POST",
-        credentials: "include",
-        body: formData,
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/news/add`,
+        {
+          method: "POST",
+          credentials: "include",
+          body: formData,
+        }
+      );
       const data = await response.json();
       if (!response.ok) {
         return showToast("error", data.message);

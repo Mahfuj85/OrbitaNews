@@ -15,7 +15,6 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { deleteData } from "@/helpers/handleDelete";
 import { showToast } from "@/helpers/showToast";
 import moment from "moment";
-import { getEnv } from "@/helpers/getEnv";
 import { useSelector } from "react-redux";
 import { TiNews } from "react-icons/ti";
 import { CiEdit } from "react-icons/ci";
@@ -31,7 +30,7 @@ const AdminNews = () => {
   //  console.log(authorId);
 
   useEffect(() => {
-    fetch(`${getEnv("VITE_BACKEND_URL")}/news/get-all`)
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/news/get-all`)
       .then((res) => res.json())
       .then((data) => setNewsData(data.news || []))
       .catch(console.error);
@@ -41,7 +40,7 @@ const AdminNews = () => {
 
   const handleDelete = async (id) => {
     const response = await deleteData(
-      `${getEnv("VITE_BACKEND_URL")}/news/delete/${id}`
+      `${import.meta.env.VITE_BACKEND_URL}/news/delete/${id}`
     );
     if (response) {
       //setRefreshData(!refreshData);

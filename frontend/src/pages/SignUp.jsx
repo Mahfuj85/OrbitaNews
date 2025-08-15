@@ -16,7 +16,6 @@ import { Card } from "@/components/ui/card";
 //import registerImage from "@/assets/images/RegisterImage.avif";
 import { RouteIndex, RouteSignIn } from "@/helpers/RouteName";
 import { Link, useNavigate } from "react-router-dom";
-import { getEnv } from "@/helpers/getEnv";
 import { showToast } from "@/helpers/showToast";
 import logo from "/images/logo-black.png";
 import GoogleLogin from "@/components/ui/GoogleLogin";
@@ -48,7 +47,7 @@ const SignUp = () => {
   async function onSubmit(values) {
     try {
       const response = await fetch(
-        `${getEnv("VITE_BACKEND_URL")}/auth/register`,
+        `${import.meta.env.VITE_BACKEND_URL}/auth/register`,
         {
           method: "POST",
           headers: { "Content-type": "application/json" },

@@ -3,7 +3,6 @@ import { Button } from "./button";
 import { FcGoogle } from "react-icons/fc";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "@/helpers/firebase";
-import { getEnv } from "@/helpers/getEnv";
 import { showToast } from "@/helpers/showToast";
 import { useNavigate } from "react-router-dom";
 import { RouteIndex } from "@/helpers/RouteName";
@@ -23,7 +22,7 @@ const GoogleLogin = () => {
     };
     try {
       const response = await fetch(
-        `${getEnv("VITE_BACKEND_URL")}/auth/google-login`,
+        `${import.meta.env.VITE_BACKEND_URL}/auth/google-login`,
         {
           method: "POST",
           headers: { "Content-type": "application/json" },

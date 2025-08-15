@@ -17,14 +17,13 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { deleteData } from "@/helpers/handleDelete";
 import { showToast } from "@/helpers/showToast";
 import moment from "moment";
-import { getEnv } from "@/helpers/getEnv";
 
 const Comments = () => {
   const [refreshData, setRefreshData] = useState(false);
   const [commentData, setCommentData] = useState(false);
 
   useEffect(() => {
-    fetch(`${getEnv("VITE_BACKEND_URL")}/comments/all-comments`, {
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/comments/all-comments`, {
       method: "GET",
       credentials: "include",
     })
@@ -35,7 +34,7 @@ const Comments = () => {
 
   const handleDelete = async (id) => {
     const response = await deleteData(
-      `${getEnv("VITE_BACKEND_URL")}/comments/delete/${id}`
+      `${import.meta.env.VITE_BACKEND_URL}/comments/delete/${id}`
     );
     if (response) {
       //setRefreshData(!refreshData);

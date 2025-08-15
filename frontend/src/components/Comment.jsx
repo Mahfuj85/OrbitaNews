@@ -12,7 +12,6 @@ import {
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { getEnv } from "@/helpers/getEnv";
 import { showToast } from "@/helpers/showToast";
 import { Textarea } from "./ui/textarea";
 import { useSelector } from "react-redux";
@@ -43,7 +42,7 @@ const Comment = ({ props }) => {
         user: user.user._id,
       };
       const response = await fetch(
-        `${getEnv("VITE_BACKEND_URL")}/comments/add`,
+        `${import.meta.env.VITE_BACKEND_URL}/comments/add`,
         {
           method: "POST",
           credentials: "include",

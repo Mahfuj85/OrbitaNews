@@ -11,9 +11,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useFetch } from "@/hooks/useFetch";
-import { getEnv } from "@/helpers/getEnv";
-import Loading from "@/components/Loading";
 import { FaEdit } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { deleteData } from "@/helpers/handleDelete";
@@ -36,7 +33,7 @@ const CategoryDetails = () => {
 
   const handleDelete = (id) => {
     const response = deleteData(
-      `${getEnv("VITE_BACKEND_URL")}/category/delete/${id}`
+      `${import.meta.env.VITE_BACKEND_URL}/category/delete/${id}`
     );
     if (response) {
       setRefreshData(!refreshData);

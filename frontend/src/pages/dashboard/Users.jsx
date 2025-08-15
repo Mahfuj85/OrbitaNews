@@ -10,18 +10,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useFetch } from "@/hooks/useFetch";
-import { getEnv } from "@/helpers/getEnv";
-import Loading from "@/components/Loading";
 import { ImUsers } from "react-icons/im";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { deleteData } from "@/helpers/handleDelete";
 import { showToast } from "@/helpers/showToast";
 import moment from "moment";
 import userIcon from "/images/avatar.png";
 
 const Users = () => {
-  const [refreshData, setRefreshData] = useState(false);
   const [userData, setUserData] = useState([]);
 
   useEffect(() => {
@@ -30,7 +25,6 @@ const Users = () => {
       credentials: "include",
     })
       .then((res) => res.json())
-      // .then((data) => console.log(data))
       .then((data) => setUserData(data.users || []))
       .catch(console.error);
   }, []);
@@ -56,8 +50,6 @@ const Users = () => {
       showToast("error", "Something went wrong");
     }
   };
-
-  //if (loading) return <Loading />;
 
   return (
     <div>

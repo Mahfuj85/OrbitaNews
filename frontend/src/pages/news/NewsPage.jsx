@@ -13,7 +13,7 @@ const NewsPage = () => {
       .catch((err) => console.error(err));
   }, []);
 
-  //console.log(newsData);
+  console.log(newsData);
 
   return (
     <div className="w-full">

@@ -44,14 +44,14 @@ const Navbar = () => {
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.user);
-  //  console.log(user.user.avatar);
+  //  console.log(user);
 
   const handleLogout = async () => {
     try {
       const response = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/auth/logout`,
         {
-          method: "GET",
+          method: "POST",
           credentials: "include",
         }
       );

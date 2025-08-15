@@ -124,6 +124,7 @@ export const GoogleLogin = async (req, res, next) => {
 
 export const Logout = async (req, res, next) => {
   try {
+    console.log("log out button hit");
     res.clearCookie("access_token", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",

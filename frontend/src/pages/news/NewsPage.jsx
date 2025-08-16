@@ -1,19 +1,30 @@
+import Loading from "@/components/Loading";
 import { RouteNewsDetails } from "@/helpers/RouteName";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const NewsPage = () => {
   const [newsData, setNewsData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     fetch(`${import.meta.env.VITE_BACKEND_URL}/news/get-all`)
       .then((res) => res.json())
-      // .then((data) => console.log(data))
-      .then((data) => setNewsData(data.news || []))
-      .catch((err) => console.error(err));
+      .then((data) => setNewsData(data?.news || []))
+      .catch((err) => console.error(err))
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, []);
 
   // console.log(newsData);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  if (isLoading) return <Loading />;
 
   return (
     <div className="w-full">

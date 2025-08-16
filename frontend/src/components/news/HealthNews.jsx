@@ -3,20 +3,27 @@ import { decode } from "entities";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Loading from "../Loading";
 
 const HealthNews = ({ category }) => {
   const [news, setNews] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     fetch(
       `${import.meta.env.VITE_BACKEND_URL}/news/get-news-category/${category}`
     )
       .then((res) => res.json())
       .then((data) => setNews(data.news || []))
-      .catch((err) => console.error(err));
+      .catch((err) => console.error(err))
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, [category]);
 
-  // console.log(news);
+  if (isLoading) return <Loading />;
+
   return (
     <div>
       <div className="flex items-center gap-2">

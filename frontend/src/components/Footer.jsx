@@ -7,37 +7,52 @@ import {
   RouteNewsDetails,
 } from "@/helpers/RouteName";
 import moment from "moment";
+import Loading from "./Loading";
 
 const Footer = () => {
   const [newsData, setNewsData] = useState([]);
   const [latestNews, setLatestNews] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     fetch(`${import.meta.env.VITE_BACKEND_URL}/news/get-all`)
       .then((res) => res.json())
-      // .then((data) => console.log(data))
       .then((data) => setNewsData(data.news || []))
-      .catch((err) => console.error(err));
+      .catch((err) => console.error(err))
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, []);
 
   //  console.log(newsData);
 
   useEffect(() => {
+    setIsLoading(true);
     fetch(`${import.meta.env.VITE_BACKEND_URL}/news/latest`)
       .then((res) => res.json())
       .then((data) => setLatestNews(data.news || []))
-      .catch(console.error);
+      .catch(console.error)
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, []);
   //  console.log(latestNews);
 
   useEffect(() => {
+    setIsLoading(true);
     fetch(`${import.meta.env.VITE_BACKEND_URL}/category/all`)
       .then((res) => res.json())
       .then((data) => setCategories(data.category || []))
-      .catch(console.error);
+      .catch(console.error)
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, []);
   // console.log(categories);
+
+  if (isLoading) return <Loading />;
 
   return (
     <footer className="bg-gray-900 text-gray-300 mt-10">

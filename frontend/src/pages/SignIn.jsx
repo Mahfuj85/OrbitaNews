@@ -54,7 +54,10 @@ const SignIn = () => {
       if (!response.ok) {
         return showToast("error", data.message);
       }
-      Cookies.set("token", data.user.access_token);
+      // console.log(data);
+      const { access_token } = data;
+      Cookies.set("token", access_token);
+
       dispatch(setUser(data.user));
       navigate(RouteIndex);
       showToast("success", data.message);

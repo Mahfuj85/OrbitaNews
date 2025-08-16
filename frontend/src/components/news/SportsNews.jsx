@@ -4,20 +4,26 @@ import { decode } from "entities";
 import moment from "moment";
 import { RouteNewsDetails } from "@/helpers/RouteName";
 import RelatedNews from "./RelatedNews";
+import Loading from "../Loading";
 
 const SportsNews = ({ category }) => {
   const [news, setNews] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     fetch(
       `${import.meta.env.VITE_BACKEND_URL}/news/get-news-category/${category}`
     )
       .then((res) => res.json())
       .then((data) => setNews(data.news || []))
-      .catch((err) => console.error(err));
+      .catch((err) => console.error(err))
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, [category]);
 
-  //  console.log(news);
+  if (isLoading) return <Loading />;
 
   return (
     <div>

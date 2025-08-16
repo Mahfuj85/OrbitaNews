@@ -54,6 +54,9 @@ const Navbar = () => {
         {
           method: "POST",
           credentials: "include",
+          headers: {
+            Authorization: `Bearer ${Cookies.get("token")}`,
+          },
         }
       );
       const data = await response.json();
@@ -177,17 +180,20 @@ const Navbar = () => {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                  <Link to={RouteProfile}>
+                  <Link to={RouteProfile} className="hover:cursor-pointer">
                     <FaRegUser /> Profile
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to={RouteDashboard}>
+                  <Link to={RouteDashboard} className="hover:cursor-pointer">
                     <MdDashboard /> Dashboard
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleLogout}>
+                <DropdownMenuItem
+                  onClick={handleLogout}
+                  className="hover:cursor-pointer"
+                >
                   <BiLogOut color="red" /> Logout
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -206,7 +212,7 @@ const Navbar = () => {
 
       {/* Mobile Dropdown */}
       <div
-        className={`fixed inset-y-0 left-0 w-64 bg-white shadow-lg z-50 transform transition-transform duration-300 ease-in-out
+        className={`fixed inset-y-0 top-6 left-0 w-64 bg-white shadow-lg z-50 transform transition-transform duration-300 ease-in-out
         ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full"}`}
       >
         <div className="flex flex-col items-start justify-between p-4 border-b font-bold space-y-4">

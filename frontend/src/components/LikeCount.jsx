@@ -11,6 +11,7 @@ const LikeCount = ({ props }) => {
   });
   const user = useSelector((state) => state.user);
   const userId = user?.isLoggedIn ? user.user._id : "";
+  // console.log(userId);
 
   // Fetch on mount
   useEffect(() => {
@@ -38,15 +39,17 @@ const LikeCount = ({ props }) => {
         {
           method: "POST",
           credentials: "include",
-          headers: { "Content-type": "application/json" },
-          body: JSON.stringify({ user: user.user._id, newsId: props.newsId }),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${Cookies.get("token")}`,
+          },
+          body: JSON.stringify({ user: userId, newsId: props.newsId }),
         }
       );
 
       if (!response.ok) {
         return showToast("error", response.statusText);
       }
-      Cookies.get("token");
       const data = await response.json();
       setLikeData({
         likeCount: data.likeCount,

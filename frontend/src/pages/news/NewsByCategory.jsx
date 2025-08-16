@@ -22,7 +22,9 @@ const NewsByCategory = () => {
       });
   }, [category]);
 
-  //console.log(newsData);
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
   if (isLoading) return <Loading />;
 

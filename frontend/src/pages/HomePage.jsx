@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import LatestNews from "../components/news/LatestNews";
 import CategoryNews from "@/components/news/CategoryNews";
 import PopularNews from "@/components/news/PopularNews";
@@ -8,6 +8,10 @@ import HealthNews from "@/components/news/HealthNews";
 import AlsoRead from "@/components/news/AlsoRead";
 
 const HomePage = () => {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   return (
     <main className="flex flex-col space-y-4">
       {/* 1st row */}

@@ -23,17 +23,17 @@ const EditCategory = () => {
   const { category_id } = useParams();
 
   useEffect(() => {
-    const token = Cookies.get("token");
     fetch(`${import.meta.env.VITE_BACKEND_URL}/category/show/${category_id}`, {
       method: "GET",
       credentials: "include",
       headers: {
-        Authorization: `Bearer ${token}`, // Example usage (if your backend expects it)
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${Cookies.get("token")}`,
       },
     })
       .then((res) => res.json())
       // .then((data) => console.log(data))
-      .then((data) => setCategoryData(data.category || null))
+      .then((data) => setCategoryData(data?.category || null))
       .catch(console.error);
   }, []);
 
@@ -73,7 +73,9 @@ const EditCategory = () => {
         `${import.meta.env.VITE_BACKEND_URL}/category/update/${category_id}`,
         {
           method: "PUT",
-          headers: { "Content-type": "application/json" },
+          headers: {
+            Authorization: `Bearer ${Cookies.get("token")}`,
+          },
           credentials: "include",
           body: JSON.stringify(values),
         }

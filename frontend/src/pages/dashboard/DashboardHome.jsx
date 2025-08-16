@@ -35,24 +35,24 @@ const DashboardHome = () => {
   useEffect(() => {
     fetch(`${import.meta.env.VITE_BACKEND_URL}/news/get-all`)
       .then((res) => res.json())
-      .then((data) => setNewsData(data.news || []))
+      .then((data) => setNewsData(data?.news || []))
       .catch(console.error);
   }, [refreshData]);
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_BACKEND_URL}/category/all`)
       .then((res) => res.json())
-      .then((data) => setCategories(data.category || []))
+      .then((data) => setCategories(data?.category || []))
       .catch(console.error);
   }, []);
 
   useEffect(() => {
-    const token = Cookies.get("token");
     fetch(`${import.meta.env.VITE_BACKEND_URL}/users/all-users`, {
       method: "GET",
       credentials: "include",
       headers: {
-        Authorization: `Bearer ${token}`, // Example usage (if your backend expects it)
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${Cookies.get("token")}`,
       },
     })
       .then((res) => res.json())
@@ -61,12 +61,11 @@ const DashboardHome = () => {
   }, []);
 
   useEffect(() => {
-    const token = Cookies.get("token");
     fetch(`${import.meta.env.VITE_BACKEND_URL}/comments/all-comments`, {
       method: "GET",
       credentials: "include",
       headers: {
-        Authorization: `Bearer ${token}`, // Example usage (if your backend expects it)
+        authorization: Cookies.get("token"),
       },
     })
       .then((res) => res.json())
@@ -78,8 +77,8 @@ const DashboardHome = () => {
     fetch(`${import.meta.env.VITE_BACKEND_URL}/news-likes/all-like`)
       .then((res) => res.json())
       .then((data) => {
-        setTotalLike(data.totalLikes || 0);
-        setLikesData(data.likes || []); // Assuming backend returns all likes with date
+        setTotalLike(data?.totalLikes || 0);
+        setLikesData(data?.likes || []); // Assuming backend returns all likes with date
       })
       .catch(console.error);
   }, [refreshData]);

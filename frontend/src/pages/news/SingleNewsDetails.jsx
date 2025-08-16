@@ -20,8 +20,12 @@ const SingleNewsDetails = () => {
       .then((data) => setNewsData(data.news || null))
       .catch((err) => console.error(err));
   }, [slug]);
-
   //console.log(newsData);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   if (isLoading) return <Loading />;
 
   return (

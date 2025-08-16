@@ -13,7 +13,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Card } from "@/components/ui/card";
-//import registerImage from "@/assets/images/RegisterImage.avif";
 import { RouteIndex, RouteSignIn } from "@/helpers/RouteName";
 import { Link, useNavigate } from "react-router-dom";
 import { showToast } from "@/helpers/showToast";

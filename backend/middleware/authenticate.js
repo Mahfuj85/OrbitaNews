@@ -3,7 +3,8 @@ import User from "./../models/user.model.js";
 
 export const authenticate = async (req, res, next) => {
   try {
-    const token = req.cookies.access_token;
+    const token =
+      req.cookies.access_token || req.headers.authorization.split(" ")[1];
     if (!token) {
       return next(403, "Unauthorized");
     }

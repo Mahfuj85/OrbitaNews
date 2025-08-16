@@ -18,32 +18,38 @@ import { deleteData } from "@/helpers/handleDelete";
 import { showToast } from "@/helpers/showToast";
 import moment from "moment";
 import Cookies from "js-cookie";
+import Loading from "@/components/Loading";
 
 const Comments = () => {
   const [refreshData, setRefreshData] = useState(false);
   const [commentData, setCommentData] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const token = Cookies.get("token");
+    setIsLoading(true);
     fetch(`${import.meta.env.VITE_BACKEND_URL}/comments/all-comments`, {
       method: "GET",
       credentials: "include",
       headers: {
-        Authorization: `Bearer ${token}`, // Example usage (if your backend expects it)
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${Cookies.get("token")}`,
       },
     })
       .then((res) => res.json())
       .then((data) => setCommentData(data.comments || []))
-      .catch(console.error);
+      .catch(console.error)
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, [refreshData]);
 
   const handleDelete = async (id) => {
-    const token = Cookies.get("token");
     const response = await deleteData(
       `${import.meta.env.VITE_BACKEND_URL}/comments/delete/${id}`,
       {
         headers: {
-          Authorization: `Bearer ${token}`, // Example usage (if your backend expects it)
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${Cookies.get("token")}`,
         },
       }
     );
@@ -55,6 +61,9 @@ const Comments = () => {
       showToast("error", "Data not deleted");
     }
   };
+
+  if (isLoading) return <Loading />;
+
   return (
     <div>
       <div className="flex items-center gap-2 text-2xl font-bold text-primary border-b pb-3 mb-8">

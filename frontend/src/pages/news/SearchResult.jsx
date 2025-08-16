@@ -15,7 +15,11 @@ const SearchResult = () => {
       .catch((err) => console.error(err));
   }, [q]);
 
-  console.log(newsData);
+  //  console.log(newsData);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
   return (
     <>

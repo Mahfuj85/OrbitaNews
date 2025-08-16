@@ -18,27 +18,33 @@ import { showToast } from "@/helpers/showToast";
 import { TbCategory } from "react-icons/tb";
 import { RouteAddCategory, RouteEditCategory } from "@/helpers/RouteName";
 import Cookies from "js-cookie";
+import Loading from "@/components/Loading";
 
 const CategoryDetails = () => {
   const [categories, setCategories] = useState([]);
   const [refreshData, setRefreshData] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     fetch(`${import.meta.env.VITE_BACKEND_URL}/category/all`)
       .then((res) => res.json())
-      .then((data) => setCategories(data.category || []))
-      .catch(console.error);
+      .then((data) => setCategories(data?.category || []))
+      .catch(console.error)
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, []);
 
   //  console.log(categories);
 
   const handleDelete = (id) => {
-    const token = Cookies.get("token");
     const response = deleteData(
       `${import.meta.env.VITE_BACKEND_URL}/category/delete/${id}`,
       {
         headers: {
-          Authorization: `Bearer ${token}`, // Example usage (if your backend expects it)
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${Cookies.get("token")}`,
         },
       }
     );
@@ -49,6 +55,9 @@ const CategoryDetails = () => {
       showToast("error", "Data not deleted");
     }
   };
+
+  if (isLoading) return <Loading />;
+
   return (
     <div>
       <div className="flex items-center gap-2 text-2xl font-bold text-primary border-b pb-3 mb-8">

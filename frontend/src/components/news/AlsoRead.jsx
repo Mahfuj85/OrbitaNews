@@ -2,17 +2,25 @@ import { RouteNewsDetails } from "@/helpers/RouteName";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Loading from "../Loading";
 
 const AlsoRead = () => {
   const [news, setNews] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     fetch(`${import.meta.env.VITE_BACKEND_URL}/news/latest`)
       .then((res) => res.json())
       .then((data) => setNews(data.news || []))
-      .catch(console.error);
+      .catch(console.error)
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, []);
   //  console.log(news);
+
+  if (isLoading) return <Loading />;
 
   return (
     <div>

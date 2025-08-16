@@ -9,22 +9,25 @@ import Cookies from "js-cookie";
 const CommentList = ({ props }) => {
   const user = useSelector((state) => state.user);
   const [comments, setComments] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const token = Cookies.get("token");
+    setIsLoading(true);
     fetch(`${import.meta.env.VITE_BACKEND_URL}/comments/get/${props.newsId}`, {
       headers: {
-        Authorization: `Bearer ${token}`, // Example usage (if your backend expects it)
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${Cookies.get("token")}`,
       },
     })
       .then((res) => res.json())
       .then((data) => setComments(data.comments || []))
-      .catch((err) => console.error(err));
+      .catch((err) => console.error(err))
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, [props.newsId]);
 
-  //  console.log(comments);
-
-  //   if (loading) return <Loading />;
+  if (isLoading) return <Loading />;
 
   return (
     <div>

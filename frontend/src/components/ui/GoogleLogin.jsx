@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { RouteIndex } from "@/helpers/RouteName";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/redux/user/user.slice";
+import Cookies from "js-cookie";
 
 const GoogleLogin = () => {
   const dispatch = useDispatch();
@@ -34,6 +35,8 @@ const GoogleLogin = () => {
       if (!response.ok) {
         return showToast("error", data.message);
       }
+      const { access_token } = data;
+      Cookies.set("token", access_token);
 
       dispatch(setUser(data.user));
       navigate(RouteIndex);

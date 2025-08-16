@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaComments } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import {
@@ -47,7 +47,10 @@ const Comment = ({ props }) => {
         {
           method: "POST",
           credentials: "include",
-          headers: { "Content-type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${Cookies.get("token")}`,
+          },
           body: JSON.stringify(newValues),
         }
       );
@@ -63,6 +66,10 @@ const Comment = ({ props }) => {
       showToast("error", error.message);
     }
   }
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
   return (
     <div>

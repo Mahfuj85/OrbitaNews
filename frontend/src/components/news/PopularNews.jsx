@@ -1,18 +1,26 @@
 import { RouteNewsDetails } from "@/helpers/RouteName";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Loading from "../Loading";
 
 const PopularNews = () => {
   const [newsData, setNewsData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    isLoading;
     fetch(`${import.meta.env.VITE_BACKEND_URL}/news/popular`)
       .then((res) => res.json())
       .then((data) => setNewsData(data.popularNews || null))
-      .catch((err) => console.error(err));
+      .catch((err) => console.error(err))
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, []);
 
   //  console.log(newsData);
+
+  if (isLoading) return <Loading />;
 
   return (
     <div className="w-full">

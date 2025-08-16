@@ -1,36 +1,24 @@
 import { RouteNewsDetails } from "@/helpers/RouteName";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-const headlines = [
-  { id: 1, title: "Breaking: Stock market hits record high", link: "/news/1" },
-  { id: 2, title: "Sports: Local team wins championship", link: "/news/2" },
-  {
-    id: 3,
-    title: "Tech: New AI tool revolutionizes industry",
-    link: "/news/3",
-  },
-  {
-    id: 4,
-    title: "Weather: Heavy rain expected this weekend",
-    link: "/news/4",
-  },
-];
+import Loading from "../Loading";
 
 const HeadlinesTicker = () => {
   const [newsData, setNewsData] = useState([]);
   const [showTicker, setShowTicker] = useState(true);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     fetch(`${import.meta.env.VITE_BACKEND_URL}/news/get-all`)
       .then((res) => res.json())
-      // .then((data) => console.log(data))
       .then((data) => setNewsData(data.news || []))
-      .catch((err) => console.error(err));
+      .catch((err) => console.error(err))
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, []);
-
-  // console.log(newsData);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,15 +35,12 @@ const HeadlinesTicker = () => {
 
   if (!showTicker) return null;
 
+  if (isLoading) return <Loading />;
+
   return (
     <div className="flex w-full bg-gray-100 border border-gray-300 overflow-hidden mt-24">
       {/* Fixed badge */}
-      <div
-        className="bg-red-600 text-white font-bold px-4 py-2 flex items-center"
-        // style={{
-        //   clipPath: "polygon(0 0, 100% 0, 70% 100%, 0% 100%)",
-        // }}
-      >
+      <div className="bg-red-600 text-white font-bold px-4 py-2 flex items-center">
         Headlines
       </div>
 

@@ -20,9 +20,11 @@ import { TiNews } from "react-icons/ti";
 import { CiEdit } from "react-icons/ci";
 import { RouteAddNews, RouteDashboardEditNews } from "@/helpers/RouteName";
 import Cookies from "js-cookie";
+import Loading from "@/components/Loading";
 
 const AuthorNews = () => {
   const [refreshData, setRefreshData] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [newsData, setNewsData] = useState(false);
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
@@ -31,24 +33,33 @@ const AuthorNews = () => {
   //  console.log(authorId);
 
   useEffect(() => {
-    const token = Cookies.get("token");
+    setIsLoading(true);
     fetch(`${import.meta.env.VITE_BACKEND_URL}/news/author/${authorId}`, {
       method: "GET",
       credentials: "include",
       headers: {
-        Authorization: `Bearer ${token}`, // send token manually
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${Cookies.get("token")}`,
       },
     })
       .then((res) => res.json())
-      .then((data) => setNewsData(data.news || []))
-      .catch(console.error);
+      .then((data) => setNewsData(data?.news || []))
+      .catch(console.error)
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, [refreshData]);
 
   // console.log(newsData);
 
   const handleDelete = async (id) => {
     const response = await deleteData(
-      `${import.meta.env.VITE_BACKEND_URL}/news/delete/${id}`
+      `${import.meta.env.VITE_BACKEND_URL}/news/delete/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("token")}`,
+        },
+      }
     );
     if (response) {
       //setRefreshData(!refreshData);
@@ -58,6 +69,8 @@ const AuthorNews = () => {
       showToast("error", "Data not deleted");
     }
   };
+
+  if (isLoading) return <Loading />;
 
   return (
     <div>

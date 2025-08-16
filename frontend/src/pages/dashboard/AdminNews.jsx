@@ -19,10 +19,12 @@ import { useSelector } from "react-redux";
 import { TiNews } from "react-icons/ti";
 import { CiEdit } from "react-icons/ci";
 import { RouteAddNews, RouteDashboardEditNews } from "@/helpers/RouteName";
+import Loading from "@/components/Loading";
 
 const AdminNews = () => {
   const [refreshData, setRefreshData] = useState(false);
   const [newsData, setNewsData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
 
@@ -30,17 +32,26 @@ const AdminNews = () => {
   //  console.log(authorId);
 
   useEffect(() => {
+    setIsLoading(true);
     fetch(`${import.meta.env.VITE_BACKEND_URL}/news/get-all`)
       .then((res) => res.json())
-      .then((data) => setNewsData(data.news || []))
-      .catch(console.error);
+      .then((data) => setNewsData(data?.news || []))
+      .catch(console.error)
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, [refreshData]);
 
   // console.log(newsData);
 
   const handleDelete = async (id) => {
     const response = await deleteData(
-      `${import.meta.env.VITE_BACKEND_URL}/news/delete/${id}`
+      `${import.meta.env.VITE_BACKEND_URL}/news/delete/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("token")}`,
+        },
+      }
     );
     if (response) {
       //setRefreshData(!refreshData);
@@ -50,6 +61,8 @@ const AdminNews = () => {
       showToast("error", "Data not deleted");
     }
   };
+
+  if (isLoading) return <Loading />;
 
   return (
     <div>

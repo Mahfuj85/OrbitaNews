@@ -1,18 +1,26 @@
 import { RouteNewsDetails } from "@/helpers/RouteName";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Loading from "../Loading";
 
 const EducationNews = ({ category }) => {
   const [news, setNews] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     fetch(
       `${import.meta.env.VITE_BACKEND_URL}/news/get-news-category/${category}`
     )
       .then((res) => res.json())
       .then((data) => setNews(data.news || []))
-      .catch((err) => console.error(err));
+      .catch((err) => console.error(err))
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, [category]);
+
+  if (isLoading) return <Loading />;
 
   return (
     <div className="w-full">

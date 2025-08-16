@@ -16,22 +16,28 @@ import { showToast } from "@/helpers/showToast";
 import moment from "moment";
 import userIcon from "/images/avatar.png";
 import Cookies from "js-cookie";
+import Loading from "@/components/Loading";
 
 const Users = () => {
   const [userData, setUserData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const token = Cookies.get("token");
+    setIsLoading(true);
     fetch(`${import.meta.env.VITE_BACKEND_URL}/users/all-users`, {
       method: "GET",
       credentials: "include",
       headers: {
-        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${Cookies.get("token")}`,
       },
     })
       .then((res) => res.json())
-      .then((data) => setUserData(data.users || []))
-      .catch(console.error);
+      .then((data) => setUserData(data?.users || []))
+      .catch(console.error)
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, []);
   //  console.log(userData);
 
@@ -44,7 +50,8 @@ const Users = () => {
           method: "DELETE",
           credentials: "include",
           headers: {
-            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         }
       );
@@ -59,6 +66,8 @@ const Users = () => {
       showToast("error", "Something went wrong");
     }
   };
+
+  if (isLoading) return <Loading />;
 
   return (
     <div>

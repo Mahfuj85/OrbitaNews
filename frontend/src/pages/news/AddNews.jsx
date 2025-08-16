@@ -40,7 +40,7 @@ const AddNews = () => {
   useEffect(() => {
     fetch(`${import.meta.env.VITE_BACKEND_URL}/category/all`)
       .then((res) => res.json())
-      .then((data) => setCategories(data.category || []))
+      .then((data) => setCategories(data?.category || []))
       .catch(console.error);
   }, []);
   //  console.log(categories);
@@ -91,12 +91,13 @@ const AddNews = () => {
         {
           method: "POST",
           credentials: "include",
-          body: formData,
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
+          body: formData,
         }
       );
+
       const data = await response.json();
       if (!response.ok) {
         return showToast("error", data.message);

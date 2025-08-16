@@ -28,37 +28,45 @@ import { useNavigate, useParams } from "react-router-dom";
 import { RouteNews } from "@/helpers/RouteName";
 import { decode } from "entities";
 import Cookies from "js-cookie";
+import Loading from "@/components/Loading";
 
 const EditNews = () => {
   const [categories, setCategories] = useState([]);
   const [newsData, setNewsData] = useState(null);
   const [filePreview, setFilePreview] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState();
   const { newsId } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
+    setIsLoading(true);
     fetch(`${import.meta.env.VITE_BACKEND_URL}/category/all`)
       .then((res) => res.json())
-      .then((data) => setCategories(data.category || []))
-      .catch(console.error);
+      .then((data) => setCategories(data?.category || []))
+      .catch(console.error)
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, []);
 
   //  console.log(categories);
 
   useEffect(() => {
-    const token = Cookies.get("token");
+    setIsLoading(true);
     fetch(`${import.meta.env.VITE_BACKEND_URL}/news/edit/${newsId}`, {
       method: "GET",
       credentials: "include",
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${Cookies.get("token")}`,
       },
     })
       .then((res) => res.json())
-      // .then((data) => console.log(data.news))
-      .then((data) => setNewsData(data.news || null))
-      .catch(console.error);
+      .then((data) => setNewsData(data?.news || null))
+      .catch(console.error)
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, []);
   //  console.log(newsData);
 
@@ -110,7 +118,7 @@ const EditNews = () => {
       const formData = new FormData();
       formData.append("file", file);
       formData.append("data", JSON.stringify(values));
-      const token = Cookies.get("token");
+
       const response = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/news/update/${newsId}`,
         {
@@ -118,7 +126,7 @@ const EditNews = () => {
           credentials: "include",
           body: formData,
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         }
       );
@@ -145,7 +153,7 @@ const EditNews = () => {
     setFilePreview(preview);
   };
 
-  // if (blogLoading) return <Loading />;
+  if (isLoading) return <Loading />;
 
   return (
     <div className="w-full max-w-screen-lg mx-auto px-4 overflow-x-hidden">

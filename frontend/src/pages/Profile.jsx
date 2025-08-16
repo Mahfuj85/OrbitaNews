@@ -18,7 +18,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { Textarea } from "@/components/ui/textarea";
-import { useFetch } from "@/hooks/useFetch";
 import Loading from "@/components/Loading";
 import { IoCameraOutline } from "react-icons/io5";
 import Dropzone from "react-dropzone";
@@ -28,6 +27,7 @@ import Cookies from "js-cookie";
 
 const Profile = () => {
   const [filePreview, setFilePreview] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState();
   const [userData, setUserData] = useState(null);
   const user = useSelector((state) => state.user);
@@ -53,15 +53,13 @@ const Profile = () => {
   });
 
   useEffect(() => {
-    const token = Cookies.get("token");
-
     fetch(
       `${import.meta.env.VITE_BACKEND_URL}/users/get-user/${user?.user?._id}`,
       {
         method: "GET",
         credentials: "include",
         headers: {
-          Authorization: `Bearer ${token}`, // send token manually
+          Authorization: `Bearer ${Cookies.get("token")}`,
         },
       }
     )
@@ -103,6 +101,9 @@ const Profile = () => {
         {
           method: "PUT",
           credentials: "include",
+          headers: {
+            Authorization: `Bearer ${Cookies.get("token")}`,
+          },
           body: formData,
         }
       );
@@ -127,7 +128,11 @@ const Profile = () => {
     setFilePreview(preview);
   };
 
-  //  if (loading) return <Loading />;
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  if (isLoading) return <Loading />;
 
   return (
     <div>

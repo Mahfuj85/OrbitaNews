@@ -4,13 +4,19 @@ import { Avatar, AvatarImage } from "./ui/avatar";
 import moment from "moment";
 import { useSelector } from "react-redux";
 import userIcon from "/images/avatar.png";
+import Cookies from "js-cookie";
 
 const CommentList = ({ props }) => {
   const user = useSelector((state) => state.user);
   const [comments, setComments] = useState([]);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_BACKEND_URL}/comments/get/${props.newsId}`)
+    const token = Cookies.get("token");
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/comments/get/${props.newsId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`, // Example usage (if your backend expects it)
+      },
+    })
       .then((res) => res.json())
       .then((data) => setComments(data.comments || []))
       .catch((err) => console.error(err));

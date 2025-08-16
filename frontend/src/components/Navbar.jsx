@@ -33,6 +33,7 @@ import SearchBox from "./SearchBox";
 import { IoMdSearch } from "react-icons/io";
 import { MdDashboard } from "react-icons/md";
 import { Menu, X } from "lucide-react";
+import Cookies from "js-cookie";
 
 const Navbar = () => {
   const [showSearch, setShowSearch] = useState(false);
@@ -59,7 +60,7 @@ const Navbar = () => {
       if (!response.ok) {
         return showToast("error", data.message);
       }
-
+      Cookies.remove("token");
       dispatch(removeUser());
       navigate(RouteIndex);
       showToast("success", data.message);

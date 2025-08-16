@@ -17,15 +17,20 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { deleteData } from "@/helpers/handleDelete";
 import { showToast } from "@/helpers/showToast";
 import moment from "moment";
+import Cookies from "js-cookie";
 
 const Comments = () => {
   const [refreshData, setRefreshData] = useState(false);
   const [commentData, setCommentData] = useState(false);
 
   useEffect(() => {
+    const token = Cookies.get("token");
     fetch(`${import.meta.env.VITE_BACKEND_URL}/comments/all-comments`, {
       method: "GET",
       credentials: "include",
+      headers: {
+        Authorization: `Bearer ${token}`, // Example usage (if your backend expects it)
+      },
     })
       .then((res) => res.json())
       .then((data) => setCommentData(data.comments || []))
@@ -33,8 +38,14 @@ const Comments = () => {
   }, [refreshData]);
 
   const handleDelete = async (id) => {
+    const token = Cookies.get("token");
     const response = await deleteData(
-      `${import.meta.env.VITE_BACKEND_URL}/comments/delete/${id}`
+      `${import.meta.env.VITE_BACKEND_URL}/comments/delete/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Example usage (if your backend expects it)
+        },
+      }
     );
     if (response) {
       //setRefreshData(!refreshData);

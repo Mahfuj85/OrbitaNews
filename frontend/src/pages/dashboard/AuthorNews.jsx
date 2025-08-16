@@ -19,6 +19,7 @@ import { useSelector } from "react-redux";
 import { TiNews } from "react-icons/ti";
 import { CiEdit } from "react-icons/ci";
 import { RouteAddNews, RouteDashboardEditNews } from "@/helpers/RouteName";
+import Cookies from "js-cookie";
 
 const AuthorNews = () => {
   const [refreshData, setRefreshData] = useState(false);
@@ -30,9 +31,13 @@ const AuthorNews = () => {
   //  console.log(authorId);
 
   useEffect(() => {
+    const token = Cookies.get("token");
     fetch(`${import.meta.env.VITE_BACKEND_URL}/news/author/${authorId}`, {
       method: "GET",
       credentials: "include",
+      headers: {
+        Authorization: `Bearer ${token}`, // send token manually
+      },
     })
       .then((res) => res.json())
       .then((data) => setNewsData(data.news || []))

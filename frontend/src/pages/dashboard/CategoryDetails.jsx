@@ -17,6 +17,7 @@ import { deleteData } from "@/helpers/handleDelete";
 import { showToast } from "@/helpers/showToast";
 import { TbCategory } from "react-icons/tb";
 import { RouteAddCategory, RouteEditCategory } from "@/helpers/RouteName";
+import Cookies from "js-cookie";
 
 const CategoryDetails = () => {
   const [categories, setCategories] = useState([]);
@@ -32,8 +33,14 @@ const CategoryDetails = () => {
   //  console.log(categories);
 
   const handleDelete = (id) => {
+    const token = Cookies.get("token");
     const response = deleteData(
-      `${import.meta.env.VITE_BACKEND_URL}/category/delete/${id}`
+      `${import.meta.env.VITE_BACKEND_URL}/category/delete/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Example usage (if your backend expects it)
+        },
+      }
     );
     if (response) {
       setRefreshData(!refreshData);

@@ -19,6 +19,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import Cookies from "js-cookie";
 
 const DashboardHome = () => {
   const [refreshData, setRefreshData] = useState(false);
@@ -46,9 +47,13 @@ const DashboardHome = () => {
   }, []);
 
   useEffect(() => {
+    const token = Cookies.get("token");
     fetch(`${import.meta.env.VITE_BACKEND_URL}/users/all-users`, {
       method: "GET",
       credentials: "include",
+      headers: {
+        Authorization: `Bearer ${token}`, // Example usage (if your backend expects it)
+      },
     })
       .then((res) => res.json())
       .then((data) => setUserData(data.users || []))
@@ -56,9 +61,13 @@ const DashboardHome = () => {
   }, []);
 
   useEffect(() => {
+    const token = Cookies.get("token");
     fetch(`${import.meta.env.VITE_BACKEND_URL}/comments/all-comments`, {
       method: "GET",
       credentials: "include",
+      headers: {
+        Authorization: `Bearer ${token}`, // Example usage (if your backend expects it)
+      },
     })
       .then((res) => res.json())
       .then((data) => setCommentData(data.comments || []))

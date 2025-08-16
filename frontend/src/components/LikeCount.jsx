@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { AiFillLike } from "react-icons/ai";
 import { showToast } from "@/helpers/showToast";
+import Cookies from "js-cookie";
 
 const LikeCount = ({ props }) => {
   const [likeData, setLikeData] = useState({
@@ -45,7 +46,7 @@ const LikeCount = ({ props }) => {
       if (!response.ok) {
         return showToast("error", response.statusText);
       }
-
+      Cookies.get("token");
       const data = await response.json();
       setLikeData({
         likeCount: data.likeCount,

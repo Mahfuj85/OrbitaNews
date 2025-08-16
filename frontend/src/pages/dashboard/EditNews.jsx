@@ -27,6 +27,7 @@ import Editor from "@/components/Editor";
 import { useNavigate, useParams } from "react-router-dom";
 import { RouteNews } from "@/helpers/RouteName";
 import { decode } from "entities";
+import Cookies from "js-cookie";
 
 const EditNews = () => {
   const [categories, setCategories] = useState([]);
@@ -46,9 +47,13 @@ const EditNews = () => {
   //  console.log(categories);
 
   useEffect(() => {
+    const token = Cookies.get("token");
     fetch(`${import.meta.env.VITE_BACKEND_URL}/news/edit/${newsId}`, {
       method: "GET",
       credentials: "include",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     })
       .then((res) => res.json())
       // .then((data) => console.log(data.news))
@@ -105,16 +110,20 @@ const EditNews = () => {
       const formData = new FormData();
       formData.append("file", file);
       formData.append("data", JSON.stringify(values));
-
+      const token = Cookies.get("token");
       const response = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/news/update/${newsId}`,
         {
           method: "PUT",
           credentials: "include",
           body: formData,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       const data = await response.json();
+
       if (!response.ok) {
         return showToast("error", data.message);
       }

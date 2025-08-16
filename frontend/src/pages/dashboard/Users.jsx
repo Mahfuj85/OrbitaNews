@@ -15,14 +15,19 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { showToast } from "@/helpers/showToast";
 import moment from "moment";
 import userIcon from "/images/avatar.png";
+import Cookies from "js-cookie";
 
 const Users = () => {
   const [userData, setUserData] = useState([]);
 
   useEffect(() => {
+    const token = Cookies.get("token");
     fetch(`${import.meta.env.VITE_BACKEND_URL}/users/all-users`, {
       method: "GET",
       credentials: "include",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     })
       .then((res) => res.json())
       .then((data) => setUserData(data.users || []))
@@ -31,12 +36,16 @@ const Users = () => {
   //  console.log(userData);
 
   const handleDelete = async (id) => {
+    const token = Cookies.get("token");
     try {
       const response = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/users/delete-user/${id}`,
         {
           method: "DELETE",
           credentials: "include",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       if (response.ok) {

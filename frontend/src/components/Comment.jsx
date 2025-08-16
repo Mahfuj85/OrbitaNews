@@ -18,6 +18,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { RouteSignIn } from "@/helpers/RouteName";
 import CommentList from "./CommentList";
+import Cookies from "js-cookie";
 
 const Comment = ({ props }) => {
   const [newComment, setNewComment] = useState();
@@ -54,6 +55,7 @@ const Comment = ({ props }) => {
       if (!response.ok) {
         return showToast("error", data.message);
       }
+      Cookies.get("token");
       setNewComment(data.comment);
       form.reset();
       showToast("success", data.message);

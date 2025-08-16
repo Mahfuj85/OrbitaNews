@@ -16,6 +16,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import slugify from "slugify";
 import { showToast } from "@/helpers/showToast";
 import { TbCategoryPlus } from "react-icons/tb";
+import Cookies from "js-cookie";
 
 const AddCategory = () => {
   const formSchema = z.object({
@@ -54,6 +55,7 @@ const AddCategory = () => {
       if (!response.ok) {
         return showToast("error", data.message);
       }
+      Cookies.get("token");
       form.reset();
       showToast("success", data.message);
     } catch (error) {

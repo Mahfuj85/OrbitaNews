@@ -21,6 +21,7 @@ import { useDispatch } from "react-redux";
 import { setUser } from "@/redux/user/user.slice";
 import GoogleLogin from "@/components/ui/GoogleLogin";
 import logo from "/images/logo-black.png";
+import Cookies from "js-cookie";
 
 const SignIn = () => {
   const dispatch = useDispatch();
@@ -53,6 +54,7 @@ const SignIn = () => {
       if (!response.ok) {
         return showToast("error", data.message);
       }
+      Cookies.set("token", data.user.access_token);
       dispatch(setUser(data.user));
       navigate(RouteIndex);
       showToast("success", data.message);

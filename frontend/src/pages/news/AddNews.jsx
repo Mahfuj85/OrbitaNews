@@ -27,6 +27,7 @@ import Editor from "@/components/Editor";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RouteNews } from "@/helpers/RouteName";
+import Cookies from "js-cookie";
 
 const AddNews = () => {
   const [categories, setCategories] = useState([]);
@@ -83,6 +84,7 @@ const AddNews = () => {
       const formData = new FormData();
       formData.append("file", file);
       formData.append("data", JSON.stringify(newValues));
+      const token = Cookies.get("token");
 
       const response = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/news/add`,
@@ -90,6 +92,9 @@ const AddNews = () => {
           method: "POST",
           credentials: "include",
           body: formData,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       const data = await response.json();

@@ -16,15 +16,20 @@ import { Card, CardContent } from "@/components/ui/card";
 import slugify from "slugify";
 import { showToast } from "@/helpers/showToast";
 import { useParams } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const EditCategory = () => {
   const [categoryData, setCategoryData] = useState(null);
   const { category_id } = useParams();
 
   useEffect(() => {
+    const token = Cookies.get("token");
     fetch(`${import.meta.env.VITE_BACKEND_URL}/category/show/${category_id}`, {
       method: "GET",
       credentials: "include",
+      headers: {
+        Authorization: `Bearer ${token}`, // Example usage (if your backend expects it)
+      },
     })
       .then((res) => res.json())
       // .then((data) => console.log(data))
@@ -74,6 +79,7 @@ const EditCategory = () => {
         }
       );
       const data = await response.json();
+      Cookies.get("token");
       if (!response.ok) {
         return showToast("error", data.message);
       }

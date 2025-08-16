@@ -24,6 +24,7 @@ import { IoCameraOutline } from "react-icons/io5";
 import Dropzone from "react-dropzone";
 import { useNavigate } from "react-router-dom";
 import { RouteIndex } from "@/helpers/RouteName";
+import Cookies from "js-cookie";
 
 const Profile = () => {
   const [filePreview, setFilePreview] = useState();
@@ -52,11 +53,16 @@ const Profile = () => {
   });
 
   useEffect(() => {
+    const token = Cookies.get("token");
+
     fetch(
       `${import.meta.env.VITE_BACKEND_URL}/users/get-user/${user?.user?._id}`,
       {
         method: "GET",
         credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`, // send token manually
+        },
       }
     )
       .then((res) => res.json())

@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/table";
 import { FaEdit } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { deleteData } from "@/helpers/handleDelete";
 import { showToast } from "@/helpers/showToast";
 import { TbCategory } from "react-icons/tb";
 import { RouteAddCategory, RouteEditCategory } from "@/helpers/RouteName";
@@ -39,11 +38,12 @@ const CategoryDetails = () => {
   //  console.log(categories);
 
   const handleDelete = (id) => {
-    const response = deleteData(
+    const response = fetch(
       `${import.meta.env.VITE_BACKEND_URL}/category/delete/${id}`,
       {
+        method: "DELETE",
+        credentials: "include",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${Cookies.get("token")}`,
         },
       }

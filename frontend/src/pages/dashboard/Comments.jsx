@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/table";
 import { FaComments } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { deleteData } from "@/helpers/handleDelete";
 import { showToast } from "@/helpers/showToast";
 import moment from "moment";
 import Cookies from "js-cookie";

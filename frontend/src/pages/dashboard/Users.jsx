@@ -42,7 +42,6 @@ const Users = () => {
   //  console.log(userData);
 
   const handleDelete = async (id) => {
-    const token = Cookies.get("token");
     try {
       const response = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/users/delete-user/${id}`,

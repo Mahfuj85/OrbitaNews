@@ -20,6 +20,7 @@ import { TiNews } from "react-icons/ti";
 import { CiEdit } from "react-icons/ci";
 import { RouteAddNews, RouteDashboardEditNews } from "@/helpers/RouteName";
 import Loading from "@/components/Loading";
+import Cookies from "js-cookie";
 
 const AdminNews = () => {
   const [refreshData, setRefreshData] = useState(false);
@@ -45,9 +46,11 @@ const AdminNews = () => {
   // console.log(newsData);
 
   const handleDelete = async (id) => {
-    const response = await deleteData(
+    const response = await fetch(
       `${import.meta.env.VITE_BACKEND_URL}/news/delete/${id}`,
       {
+        method: "DELETE",
+        credentials: "include",
         headers: {
           Authorization: `Bearer ${Cookies.get("token")}`,
         },

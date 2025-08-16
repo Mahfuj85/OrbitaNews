@@ -44,11 +44,12 @@ const Comments = () => {
   }, [refreshData]);
 
   const handleDelete = async (id) => {
-    const response = await deleteData(
+    const response = await fetch(
       `${import.meta.env.VITE_BACKEND_URL}/comments/delete/${id}`,
       {
+        method: "DELETE",
+        credentials: "include",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${Cookies.get("token")}`,
         },
       }

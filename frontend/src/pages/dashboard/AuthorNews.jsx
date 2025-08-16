@@ -53,9 +53,11 @@ const AuthorNews = () => {
   // console.log(newsData);
 
   const handleDelete = async (id) => {
-    const response = await deleteData(
+    const response = await fetch(
       `${import.meta.env.VITE_BACKEND_URL}/news/delete/${id}`,
       {
+        method: "DELETE",
+        credentials: "include",
         headers: {
           Authorization: `Bearer ${Cookies.get("token")}`,
         },

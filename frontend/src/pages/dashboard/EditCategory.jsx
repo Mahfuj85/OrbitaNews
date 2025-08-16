@@ -27,7 +27,6 @@ const EditCategory = () => {
       method: "GET",
       credentials: "include",
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${Cookies.get("token")}`,
       },
     })
@@ -74,6 +73,7 @@ const EditCategory = () => {
         {
           method: "PUT",
           headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${Cookies.get("token")}`,
           },
           credentials: "include",

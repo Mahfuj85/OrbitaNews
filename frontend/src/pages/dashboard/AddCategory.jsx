@@ -46,10 +46,11 @@ const AddCategory = () => {
         `${import.meta.env.VITE_BACKEND_URL}/category/add`,
         {
           method: "POST",
+          credentials: "include",
           headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${Cookies.get("token")}`,
           },
-          credentials: "include",
           body: JSON.stringify(values),
         }
       );

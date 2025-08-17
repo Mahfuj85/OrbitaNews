@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import {
   RouteAbout,
   RouteAddCategory,
@@ -54,7 +54,10 @@ const App = () => {
       <Routes>
         {/* DASHBOARD ROUTES */}
         <Route path={RouteDashboard} element={<DashboardLayout />}>
-          <Route index element={<Dashboard />} />
+          <Route
+            path={RouteDashboard}
+            element={<Navigate to={RouteDashboardHome} replace />}
+          />
           <Route path={RouteDashboardHome} element={<DashboardHome />} />
           <Route path={RouteComments} element={<Comments />} />
           <Route path={RouteAuthorNews} element={<AuthorNews />} />
